@@ -56,6 +56,14 @@ examples:
     vars:
       region_target_http_proxy_name: 'test-https-redirect-proxy'
       region_url_map_name: 'url-map'
+  - !ruby/object:Provider::Terraform::Examples
+    name: 'region_target_http_proxy_http_keep_alive_timeout'
+    primary_resource_id: 'default'
+    vars:
+      region_target_http_proxy_name: 'test-http-keep-alive-timeout-proxy'
+      region_url_map_name: 'url-map'
+      region_backend_service_name: 'backend-service'
+      region_http_health_check_name: 'http-health-check'
 parameters:
   - !ruby/object:Api::Type::ResourceRef
     name: 'region'
@@ -104,3 +112,10 @@ properties:
     update_verb: :POST
     custom_expand: 'templates/terraform/custom_expand/resourceref_with_validation.go.erb'
     update_url: 'projects/{{project}}/regions/{{region}}/targetHttpProxies/{{name}}/setUrlMap'
+  - !ruby/object:Api::Type::Integer
+    name: 'httpKeepAliveTimeoutSec'
+    description: |
+      Specifies how long to keep a connection open, after completing a response, while there is no matching traffic (in seconds). 
+      If an HTTP keep-alive is not specified, a default value (610 seconds) will be used.
+      For global external Application Load Balancers, the minimum allowed value is 5 seconds and the maximum allowed value is 1200 seconds.
+      For classic Application Load Balancers, this option is not supported.
